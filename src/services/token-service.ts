@@ -35,7 +35,7 @@ export const generateTokens = <T extends JwtPayload>(payload: T) => {
 };
 
 ////////// Валидируем токены //////////
-export const validateToken = <T extends JwtPayload>(token: string, secret: string): T | null => {
+export const validateToken = <T extends JwtPayload>(token: string, secret?: string): T | null => {
   if (!secret) {
     throw new GraphQLError('Secret is not defined');
   }
@@ -51,4 +51,14 @@ export const validateToken = <T extends JwtPayload>(token: string, secret: strin
 ////////// Сохраняем токен в базу //////////
 export const saveToken = async (userId: string, refreshToken: string) => {
   await Token.findOneAndUpdate({ userId }, { refreshToken }, { upsert: true, new: true });
+};
+
+//////////  токен //////////
+export const getToken = async (refreshToken: string) => {
+  return await Token.findOne({ refreshToken });
+};
+
+////////// Удаляем токен //////////
+export const removeToken = async (refreshToken: string) => {
+  await Token.deleteOne({ refreshToken });
 };
