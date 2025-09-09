@@ -14,6 +14,15 @@ export const typeDefs = gql`
     coverUrl: String
   }
 
+  input BookInput {
+    id: ID!
+    title: String!
+    authors: [String!]!
+    categories: [String!]!
+    coverUrl: String
+    status: Boolean!
+  }
+
   type UserBook {
     book: Book!
     status: String!
@@ -24,7 +33,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    addBookToLibrary(book: Book!, status: String!): AddBookToLibraryResponse
+    addBookToLibrary(book: BookInput!, status: String!): AddBookToLibraryResponse
   }
 
   type AddBookToLibraryResponse {

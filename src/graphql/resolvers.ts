@@ -1,5 +1,4 @@
 import { getBooksByCategory } from '@/services';
-import { TGetBooksParams } from '@/types';
 import { Resolvers } from '@/types/graphql-types';
 import { GraphQLError } from 'graphql';
 

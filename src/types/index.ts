@@ -6,9 +6,3 @@ export type TExternalApiResponse = {
   work_count: number;
   works: any[];
 };
-
-export type TGetBooksParams = {
-  category: string;
-  limit: number;
-  page: number;
-};
