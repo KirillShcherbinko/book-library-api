@@ -1,7 +1,9 @@
 import { GraphQLError } from 'graphql';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { IncomingMessage } from 'http';
+import { Token } from '@/model/Token';
 
+////////// Парсинг файлов куки //////////
 export const parseCookies = (req: IncomingMessage): Record<string, string> => {
   const cookieHeader = req.headers.cookie;
   if (!cookieHeader) {
@@ -17,6 +19,22 @@ export const parseCookies = (req: IncomingMessage): Record<string, string> => {
   );
 };
 
+////////// Генерируем токены //////////
+export const generateTokens = <T extends JwtPayload>(payload: T) => {
+  const { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } = process.env;
+  if (!JWT_ACCESS_SECRET || !JWT_REFRESH_SECRET) {
+    throw new GraphQLError('Invalid token secret', {
+      extensions: { code: 'INTERNAL_SERVER_ERROR' },
+    });
+  }
+
+  const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '3m' });
+  const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, { expiresIn: '10m' });
+
+  return { accessToken, refreshToken };
+};
+
+////////// Валидируем токены //////////
 export const validateToken = <T extends JwtPayload>(token: string, secret: string): T | null => {
   if (!secret) {
     throw new GraphQLError('Secret is not defined');
@@ -28,4 +46,9 @@ export const validateToken = <T extends JwtPayload>(token: string, secret: strin
   } catch (_error) {
     return null;
   }
+};
+
+////////// Сохраняем токен в базу //////////
+export const saveToken = async (userId: string, refreshToken: string) => {
+  await Token.findOneAndUpdate({ userId }, { refreshToken }, { upsert: true, new: true });
 };
