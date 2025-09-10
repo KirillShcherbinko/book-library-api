@@ -6,8 +6,8 @@ export type TGraphQLContextParams = {
 };
 
 export type TGraphQLContext = {
-  userId: string;
-  accessToken: string;
+  userId?: string;
+  accessToken?: string;
   refreshToken?: string;
-  res: unknown;
+  res: ServerResponse;
 };

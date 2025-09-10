@@ -22,35 +22,61 @@ export type AddBookToLibraryResponse = {
   userBook: UserBook;
 };
 
-export type Author = {
-  __typename?: 'Author';
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
+export type AuthResponse = {
+  __typename?: 'AuthResponse';
+  accessToken?: Maybe<Scalars['String']['output']>;
+  refreshToken?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
 };
 
 export type Book = {
   __typename?: 'Book';
-  authors: Array<Author>;
+  authors: Array<Scalars['String']['output']>;
   categories: Array<Scalars['String']['output']>;
   coverUrl?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   title: Scalars['String']['output'];
 };
 
+export type BookInput = {
+  authors: Array<Scalars['String']['input']>;
+  categories: Array<Scalars['String']['input']>;
+  coverUrl?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  status: Scalars['Boolean']['input'];
+  title: Scalars['String']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addBookToLibrary?: Maybe<AddBookToLibraryResponse>;
+  login?: Maybe<AuthResponse>;
+  logout?: Maybe<Scalars['Boolean']['output']>;
+  register?: Maybe<AuthResponse>;
 };
 
 
 export type MutationAddBookToLibraryArgs = {
-  book: Book;
+  book: BookInput;
   status: Scalars['String']['input'];
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+
+export type MutationRegisterArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  booksByCategory: Array<Book>;
+  booksByCategory?: Maybe<Array<Book>>;
+  refresh?: Maybe<AuthResponse>;
 };
 
 
@@ -141,8 +167,9 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   AddBookToLibraryResponse: ResolverTypeWrapper<AddBookToLibraryResponse>;
-  Author: ResolverTypeWrapper<Author>;
+  AuthResponse: ResolverTypeWrapper<AuthResponse>;
   Book: ResolverTypeWrapper<Book>;
+  BookInput: BookInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
@@ -155,8 +182,9 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   AddBookToLibraryResponse: AddBookToLibraryResponse;
-  Author: Author;
+  AuthResponse: AuthResponse;
   Book: Book;
+  BookInput: BookInput;
   Boolean: Scalars['Boolean']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
@@ -171,13 +199,14 @@ export type AddBookToLibraryResponseResolvers<ContextType = any, ParentType exte
   userBook?: Resolver<ResolversTypes['UserBook'], ParentType, ContextType>;
 }>;
 
-export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+export type AuthResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthResponse'] = ResolversParentTypes['AuthResponse']> = ResolversObject<{
+  accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  refreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 }>;
 
 export type BookResolvers<ContextType = any, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
-  authors?: Resolver<Array<ResolversTypes['Author']>, ParentType, ContextType>;
+  authors?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   categories?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   coverUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -186,10 +215,14 @@ export type BookResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   addBookToLibrary?: Resolver<Maybe<ResolversTypes['AddBookToLibraryResponse']>, ParentType, ContextType, RequireFields<MutationAddBookToLibraryArgs, 'book' | 'status'>>;
+  login?: Resolver<Maybe<ResolversTypes['AuthResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+  logout?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  register?: Resolver<Maybe<ResolversTypes['AuthResponse']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  booksByCategory?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType, RequireFields<QueryBooksByCategoryArgs, 'category'>>;
+  booksByCategory?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksByCategoryArgs, 'category'>>;
+  refresh?: Resolver<Maybe<ResolversTypes['AuthResponse']>, ParentType, ContextType>;
 }>;
 
 export type UserBookResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserBook'] = ResolversParentTypes['UserBook']> = ResolversObject<{
@@ -199,7 +232,7 @@ export type UserBookResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type Resolvers<ContextType = any> = ResolversObject<{
   AddBookToLibraryResponse?: AddBookToLibraryResponseResolvers<ContextType>;
-  Author?: AuthorResolvers<ContextType>;
+  AuthResponse?: AuthResponseResolvers<ContextType>;
   Book?: BookResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

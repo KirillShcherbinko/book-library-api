@@ -1,15 +1,16 @@
 import { gql } from 'graphql-tag';
 
 export const typeDefs = gql`
-  type Author {
-    id: ID!
-    name: String!
+  type AuthResponse {
+    userId: String
+    accessToken: String
+    refreshToken: String
   }
 
   type Book {
     id: ID!
     title: String!
-    authors: [Author!]!
+    authors: [String!]!
     categories: [String!]!
     coverUrl: String
   }
@@ -29,10 +30,14 @@ export const typeDefs = gql`
   }
 
   type Query {
-    booksByCategory(category: String!, limit: Int, page: Int): [Book!]!
+    refresh: AuthResponse
+    booksByCategory(category: String!, limit: Int, page: Int): [Book!]
   }
 
   type Mutation {
+    login(email: String!, password: String!): AuthResponse
+    register(email: String!, password: String!): AuthResponse
+    logout: Boolean
     addBookToLibrary(book: BookInput!, status: String!): AddBookToLibraryResponse
   }
 

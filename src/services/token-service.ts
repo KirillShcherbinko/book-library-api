@@ -1,23 +1,7 @@
 import { GraphQLError } from 'graphql';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { IncomingMessage } from 'http';
-import { Token } from '@/model/Token';
-
-////////// Парсинг файлов куки //////////
-export const parseCookies = (req: IncomingMessage): Record<string, string> => {
-  const cookieHeader = req.headers.cookie;
-  if (!cookieHeader) {
-    return {};
-  }
-
-  return Object.fromEntries(
-    cookieHeader.split(';').map((cookie) => {
-      // Разбиваем куки на пары ключ-значения, учитывая возможный символ '=' в значении
-      const [key, ...rest] = cookie.trim().split('=');
-      return [key, decodeURIComponent(rest.join('='))];
-    }),
-  );
-};
+import { Token } from '@/models/Token';
 
 ////////// Генерируем токены //////////
 export const generateTokens = <T extends JwtPayload>(payload: T) => {
@@ -35,9 +19,13 @@ export const generateTokens = <T extends JwtPayload>(payload: T) => {
 };
 
 ////////// Валидируем токены //////////
-export const validateToken = <T extends JwtPayload>(token: string, secret?: string): T | null => {
+export const validateToken = <T extends JwtPayload>(token?: string, secret?: string): T | null => {
   if (!secret) {
     throw new GraphQLError('Secret is not defined');
+  }
+
+  if (!token) {
+    return null;
   }
 
   try {

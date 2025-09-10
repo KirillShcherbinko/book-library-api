@@ -1,10 +1,11 @@
 import { TExternalApiResponse } from '@/types';
+import { Book } from '@/types/graphql-types';
 
 export const getBooksByCategory = async (
   category: string,
   limit?: number | null,
   page?: number | null,
-): Promise<any[]> => {
+): Promise<Book[]> => {
   const params = new URLSearchParams();
 
   params.append('fields', 'key,title,subject');
@@ -20,13 +21,16 @@ export const getBooksByCategory = async (
   }
 
   const data = await result.json();
-  const books = (data as TExternalApiResponse).works.map((book) => {
-    return {
-      id: book.key,
-      author: book.authors,
-      title: book.title,
-      categories: book.subject.slice(10),
-    };
-  });
+
+  const books: Book[] = (data as TExternalApiResponse).works.map(
+    ({ key, title, authors, subject }) => {
+      return {
+        id: key,
+        authors: authors.map((author) => author.name),
+        title: title,
+        categories: subject.slice(0, 10),
+      };
+    },
+  );
   return books;
 };

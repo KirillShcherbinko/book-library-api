@@ -1,7 +1,9 @@
-import { User } from '@/model/User';
+import { User } from '@/models/User';
 import { GraphQLError } from 'graphql';
 import { compare, hashSync } from 'bcrypt';
 import { generateTokens, getToken, removeToken, saveToken, validateToken } from './token-service';
+import { validateUser } from '@/helpers/validate-user';
+import { AuthResponse } from '@/types/graphql-types';
 
 ////////// Логин //////////
 export const login = async (email: string, password: string) => {
@@ -23,6 +25,8 @@ export const login = async (email: string, password: string) => {
 
 ////////// Регистрация //////////
 export const register = async (email: string, password: string) => {
+  validateUser(email, password);
+
   const isUserExists = await User.findOne({ email });
   if (isUserExists) {
     throw new GraphQLError('User already exists', { extensions: { code: 'BAD_USER_INPUT' } });
