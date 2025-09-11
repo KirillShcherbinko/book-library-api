@@ -10,8 +10,11 @@ export const typeDefs = gql`
   type Book {
     key: ID!
     title: String!
+    description: String
     authors: [String!]!
-    coverUrl: String
+    subjects: [String!]
+    coverIds: [Int!]
+    coverId: Int
   }
 
   input BookInput {
@@ -29,6 +32,7 @@ export const typeDefs = gql`
 
   type Query {
     refresh: AuthResponse!
+    searchBooks(searchQuery: String!, limit: Int, page: Int): [Book!]
     booksByCategory(category: String!, limit: Int, page: Int): [Book!]
     book(key: String!): Book!
   }

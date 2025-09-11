@@ -1,35 +1,32 @@
-export type TOpenLibraryBook = {
+export type TFetchBooksData = {
   key: string;
   title: string;
   authors: { id: string; name: string }[];
-  cover_url?: string;
+  cover_id?: number;
 };
 
-export type TOpenLibraryBookRaw = {
+export type TSearchBookData = {
+  key: string;
+  title: string;
+  author_name: string[];
+  cover_i?: number;
+};
+
+export type TFetchBookData = {
   key: string;
   title: string;
   authors: { author: { key: string } }[];
-  description?: string;
-  covers?: number[];
-  subjects?: string[];
+  description?: string | { value: string };
+  covers: number[];
+  subjects: string[];
 };
 
-export type TOpenLibraryBookInfo = {
-  key: string;
-  title: string;
-  author: string;
-  description?: string;
-  covers?: number[];
-  subjects?: string[];
-};
-
-export type TOpenLibraryAuthor = { name: string };
-
-export type TExternalApiResponse = {
-  key: string;
-  name: string;
-  subject_type: string;
-  solr_query: string;
+export type TFetchBooksResponse = {
   work_count: number;
-  works: TOpenLibraryBook[];
+  works: TFetchBooksData[];
+};
+
+export type TSearchBooksResponse = {
+  numFound: number;
+  docs: TSearchBookData[];
 };

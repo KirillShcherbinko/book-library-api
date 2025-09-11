@@ -32,8 +32,11 @@ export type AuthResponse = {
 export type Book = {
   __typename?: 'Book';
   authors: Array<Scalars['String']['output']>;
-  coverUrl?: Maybe<Scalars['String']['output']>;
+  coverId?: Maybe<Scalars['Int']['output']>;
+  coverIds?: Maybe<Array<Scalars['Int']['output']>>;
+  description?: Maybe<Scalars['String']['output']>;
   key: Scalars['ID']['output'];
+  subjects?: Maybe<Array<Scalars['String']['output']>>;
   title: Scalars['String']['output'];
 };
 
@@ -76,6 +79,7 @@ export type Query = {
   book: Book;
   booksByCategory?: Maybe<Array<Book>>;
   refresh: AuthResponse;
+  searchBooks?: Maybe<Array<Book>>;
 };
 
 
@@ -88,6 +92,13 @@ export type QueryBooksByCategoryArgs = {
   category: Scalars['String']['input'];
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QuerySearchBooksArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  searchQuery: Scalars['String']['input'];
 };
 
 export type UserBook = {
@@ -211,8 +222,11 @@ export type AuthResponseResolvers<ContextType = any, ParentType extends Resolver
 
 export type BookResolvers<ContextType = any, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
   authors?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  coverUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  coverId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  coverIds?: Resolver<Maybe<Array<ResolversTypes['Int']>>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   key?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  subjects?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 }>;
 
@@ -227,6 +241,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'key'>>;
   booksByCategory?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksByCategoryArgs, 'category'>>;
   refresh?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType>;
+  searchBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QuerySearchBooksArgs, 'searchQuery'>>;
 }>;
 
 export type UserBookResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserBook'] = ResolversParentTypes['UserBook']> = ResolversObject<{
