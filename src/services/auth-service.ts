@@ -1,4 +1,4 @@
-import { User } from '@/models/User';
+import { userModel } from '@/models/userModel';
 import { GraphQLError } from 'graphql';
 import { compare, hashSync } from 'bcrypt';
 import { generateTokens, getToken, removeToken, saveToken, validateToken } from './token-service';
@@ -7,7 +7,7 @@ import { AuthResponse } from '@/types/graphql-types';
 
 ////////// Логин //////////
 export const login = async (email: string, password: string) => {
-  const userData = await User.findOne({ email });
+  const userData = await userModel.findOne({ email });
   if (!userData) {
     throw new GraphQLError('Invalid email', { extensions: { code: 'BAD_USER_INPUT' } });
   }
@@ -27,13 +27,13 @@ export const login = async (email: string, password: string) => {
 export const register = async (email: string, password: string) => {
   validateUser(email, password);
 
-  const isUserExists = await User.findOne({ email });
+  const isUserExists = await userModel.findOne({ email });
   if (isUserExists) {
-    throw new GraphQLError('User already exists', { extensions: { code: 'BAD_USER_INPUT' } });
+    throw new GraphQLError('userModel already exists', { extensions: { code: 'BAD_USER_INPUT' } });
   }
 
   const hashedPassword = hashSync(password, 8);
-  const { id } = await User.create({ email, hashedPassword });
+  const { id } = await userModel.create({ email, hashedPassword });
 
   const { accessToken, refreshToken } = generateTokens({ userId: id });
   await saveToken(id, refreshToken);

@@ -8,20 +8,18 @@ export const typeDefs = gql`
   }
 
   type Book {
-    id: ID!
+    key: ID!
     title: String!
     authors: [String!]!
-    categories: [String!]!
     coverUrl: String
   }
 
   input BookInput {
-    id: ID!
+    key: ID!
     title: String!
     authors: [String!]!
-    categories: [String!]!
     coverUrl: String
-    status: Boolean!
+    isTaken: Boolean!
   }
 
   type UserBook {
@@ -30,14 +28,15 @@ export const typeDefs = gql`
   }
 
   type Query {
-    refresh: AuthResponse
+    refresh: AuthResponse!
     booksByCategory(category: String!, limit: Int, page: Int): [Book!]
+    book(key: String!): Book!
   }
 
   type Mutation {
-    login(email: String!, password: String!): AuthResponse
-    register(email: String!, password: String!): AuthResponse
-    logout: Boolean
+    login(email: String!, password: String!): AuthResponse!
+    register(email: String!, password: String!): AuthResponse!
+    logout: Boolean!
     addBookToLibrary(book: BookInput!, status: String!): AddBookToLibraryResponse
   }
 

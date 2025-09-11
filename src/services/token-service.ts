@@ -1,7 +1,7 @@
 import { GraphQLError } from 'graphql';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { IncomingMessage } from 'http';
-import { Token } from '@/models/Token';
+import { tokenModel } from '@/models/tokenModel';
 
 ////////// Генерируем токены //////////
 export const generateTokens = <T extends JwtPayload>(payload: T) => {
@@ -38,15 +38,15 @@ export const validateToken = <T extends JwtPayload>(token?: string, secret?: str
 
 ////////// Сохраняем токен в базу //////////
 export const saveToken = async (userId: string, refreshToken: string) => {
-  await Token.findOneAndUpdate({ userId }, { refreshToken }, { upsert: true, new: true });
+  await tokenModel.findOneAndUpdate({ userId }, { refreshToken }, { upsert: true, new: true });
 };
 
 //////////  токен //////////
 export const getToken = async (refreshToken: string) => {
-  return await Token.findOne({ refreshToken });
+  return await tokenModel.findOne({ refreshToken });
 };
 
 ////////// Удаляем токен //////////
 export const removeToken = async (refreshToken: string) => {
-  await Token.deleteOne({ refreshToken });
+  await tokenModel.deleteOne({ refreshToken });
 };

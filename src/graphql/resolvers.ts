@@ -1,7 +1,6 @@
 import { getBooksByCategory } from '@/services/open-library-service';
 import { login, logout, refresh, register } from '@/services/auth-service';
 import { Resolvers } from '@/types/graphql-types';
-import { GraphQLError } from 'graphql';
 import { clearCookies, setCookies } from '@/services/cookie-service';
 
 export const resolvers: Resolvers = {
@@ -13,9 +12,7 @@ export const resolvers: Resolvers = {
     refresh: async (_, __, context) => {
       const { refreshToken } = context;
       const { newRefreshToken } = await refresh(refreshToken);
-
       setCookies('refresh-token', newRefreshToken, context);
-
       return { refreshToken: newRefreshToken };
     },
   },

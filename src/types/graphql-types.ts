@@ -32,27 +32,25 @@ export type AuthResponse = {
 export type Book = {
   __typename?: 'Book';
   authors: Array<Scalars['String']['output']>;
-  categories: Array<Scalars['String']['output']>;
   coverUrl?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
+  key: Scalars['ID']['output'];
   title: Scalars['String']['output'];
 };
 
 export type BookInput = {
   authors: Array<Scalars['String']['input']>;
-  categories: Array<Scalars['String']['input']>;
   coverUrl?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
-  status: Scalars['Boolean']['input'];
+  isTaken: Scalars['Boolean']['input'];
+  key: Scalars['ID']['input'];
   title: Scalars['String']['input'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   addBookToLibrary?: Maybe<AddBookToLibraryResponse>;
-  login?: Maybe<AuthResponse>;
-  logout?: Maybe<Scalars['Boolean']['output']>;
-  register?: Maybe<AuthResponse>;
+  login: AuthResponse;
+  logout: Scalars['Boolean']['output'];
+  register: AuthResponse;
 };
 
 
@@ -75,8 +73,14 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  book: Book;
   booksByCategory?: Maybe<Array<Book>>;
-  refresh?: Maybe<AuthResponse>;
+  refresh: AuthResponse;
+};
+
+
+export type QueryBookArgs = {
+  key: Scalars['String']['input'];
 };
 
 
@@ -207,22 +211,22 @@ export type AuthResponseResolvers<ContextType = any, ParentType extends Resolver
 
 export type BookResolvers<ContextType = any, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
   authors?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  categories?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   coverUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  key?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   addBookToLibrary?: Resolver<Maybe<ResolversTypes['AddBookToLibraryResponse']>, ParentType, ContextType, RequireFields<MutationAddBookToLibraryArgs, 'book' | 'status'>>;
-  login?: Resolver<Maybe<ResolversTypes['AuthResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
-  logout?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  register?: Resolver<Maybe<ResolversTypes['AuthResponse']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
+  login?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+  logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  register?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'key'>>;
   booksByCategory?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksByCategoryArgs, 'category'>>;
-  refresh?: Resolver<Maybe<ResolversTypes['AuthResponse']>, ParentType, ContextType>;
+  refresh?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType>;
 }>;
 
 export type UserBookResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserBook'] = ResolversParentTypes['UserBook']> = ResolversObject<{

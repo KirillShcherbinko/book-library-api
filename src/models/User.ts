@@ -5,4 +5,4 @@ const userSchema = new Schema({
   hashedPassword: { type: String, required: true },
 });
 
-export const User = model('User', userSchema);
+export const userModel = model('userModel', userSchema);
