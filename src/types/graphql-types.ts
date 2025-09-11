@@ -16,12 +16,6 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
-export type AddBookToLibraryResponse = {
-  __typename?: 'AddBookToLibraryResponse';
-  success: Scalars['Boolean']['output'];
-  userBook: UserBook;
-};
-
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   accessToken?: Maybe<Scalars['String']['output']>;
@@ -42,15 +36,14 @@ export type Book = {
 
 export type BookInput = {
   authors: Array<Scalars['String']['input']>;
-  coverUrl?: InputMaybe<Scalars['String']['input']>;
-  isTaken: Scalars['Boolean']['input'];
+  coverId?: InputMaybe<Scalars['String']['input']>;
   key: Scalars['ID']['input'];
   title: Scalars['String']['input'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addBookToLibrary?: Maybe<AddBookToLibraryResponse>;
+  addBookToLibrary: Scalars['Boolean']['output'];
   login: AuthResponse;
   logout: Scalars['Boolean']['output'];
   register: AuthResponse;
@@ -59,7 +52,6 @@ export type Mutation = {
 
 export type MutationAddBookToLibraryArgs = {
   book: BookInput;
-  status: Scalars['String']['input'];
 };
 
 
@@ -99,12 +91,6 @@ export type QuerySearchBooksArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   searchQuery: Scalars['String']['input'];
-};
-
-export type UserBook = {
-  __typename?: 'UserBook';
-  book: Book;
-  status: Scalars['String']['output'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -181,7 +167,6 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  AddBookToLibraryResponse: ResolverTypeWrapper<AddBookToLibraryResponse>;
   AuthResponse: ResolverTypeWrapper<AuthResponse>;
   Book: ResolverTypeWrapper<Book>;
   BookInput: BookInput;
@@ -191,12 +176,10 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  UserBook: ResolverTypeWrapper<UserBook>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  AddBookToLibraryResponse: AddBookToLibraryResponse;
   AuthResponse: AuthResponse;
   Book: Book;
   BookInput: BookInput;
@@ -206,12 +189,6 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: Record<PropertyKey, never>;
   Query: Record<PropertyKey, never>;
   String: Scalars['String']['output'];
-  UserBook: UserBook;
-}>;
-
-export type AddBookToLibraryResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['AddBookToLibraryResponse'] = ResolversParentTypes['AddBookToLibraryResponse']> = ResolversObject<{
-  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  userBook?: Resolver<ResolversTypes['UserBook'], ParentType, ContextType>;
 }>;
 
 export type AuthResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthResponse'] = ResolversParentTypes['AuthResponse']> = ResolversObject<{
@@ -231,7 +208,7 @@ export type BookResolvers<ContextType = any, ParentType extends ResolversParentT
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  addBookToLibrary?: Resolver<Maybe<ResolversTypes['AddBookToLibraryResponse']>, ParentType, ContextType, RequireFields<MutationAddBookToLibraryArgs, 'book' | 'status'>>;
+  addBookToLibrary?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddBookToLibraryArgs, 'book'>>;
   login?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   register?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
@@ -244,17 +221,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   searchBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QuerySearchBooksArgs, 'searchQuery'>>;
 }>;
 
-export type UserBookResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserBook'] = ResolversParentTypes['UserBook']> = ResolversObject<{
-  book?: Resolver<ResolversTypes['Book'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-}>;
-
 export type Resolvers<ContextType = any> = ResolversObject<{
-  AddBookToLibraryResponse?: AddBookToLibraryResponseResolvers<ContextType>;
   AuthResponse?: AuthResponseResolvers<ContextType>;
   Book?: BookResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  UserBook?: UserBookResolvers<ContextType>;
 }>;
 

@@ -3,6 +3,9 @@ import { fetchBook, fetchBooksByCategory } from '@/services/open-library-service
 import { login, logout, refresh, register } from '@/services/auth-service';
 import { Resolvers } from '@/types/graphql-types';
 import { clearCookies, setCookies } from '@/services/cookie-service';
+import { authUser } from '@/helpers/auth-user';
+import { TGraphQLContext } from '@/types/context-types';
+import { addBookToLibrary } from '@/services/user-books-service';
 
 export const resolvers: Resolvers = {
   Query: {
@@ -43,6 +46,11 @@ export const resolvers: Resolvers = {
       await logout(refreshToken);
       clearCookies('refresh-token', context);
       return true;
+    },
+
+    addBookToLibrary: async (_, { book }, context: TGraphQLContext) => {
+      const userId = authUser(context);
+      return await addBookToLibrary(userId, book);
     },
   },
 };

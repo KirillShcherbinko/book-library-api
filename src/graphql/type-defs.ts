@@ -21,13 +21,7 @@ export const typeDefs = gql`
     key: ID!
     title: String!
     authors: [String!]!
-    coverUrl: String
-    isTaken: Boolean!
-  }
-
-  type UserBook {
-    book: Book!
-    status: String!
+    coverId: String
   }
 
   type Query {
@@ -41,11 +35,6 @@ export const typeDefs = gql`
     login(email: String!, password: String!): AuthResponse!
     register(email: String!, password: String!): AuthResponse!
     logout: Boolean!
-    addBookToLibrary(book: BookInput!, status: String!): AddBookToLibraryResponse
-  }
-
-  type AddBookToLibraryResponse {
-    success: Boolean!
-    userBook: UserBook!
+    addBookToLibrary(book: BookInput!): Boolean!
   }
 `;
