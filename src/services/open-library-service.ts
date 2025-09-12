@@ -1,29 +1,18 @@
+import { fetchJson } from '@/helpers/fetch-json';
 import { TFetchBookData, TFetchBooksResponse, TSearchBooksResponse } from '@/types';
 import { Book } from '@/types/graphql-types';
-
-const { EXTERNAL_API_URL } = process.env;
-
-////////// Типизированное получение данных с сервера //////////
-const fetchJson = async <T>(url: string) => {
-  const result = await fetch(`${EXTERNAL_API_URL}${url}`);
-  if (!result.ok) {
-    throw new Error(`External API error: ${result.status} ${result.statusText}`);
-  }
-
-  return (await result.json()) as T;
-};
 
 ////////// Получение книг из библиотеки по категориям //////////
 export const fetchBooksByCategory = async (
   category: string,
-  limit?: number | null,
-  page?: number | null,
+  limit: number = 10,
+  page: number = 1,
 ): Promise<Book[]> => {
   const params = new URLSearchParams();
 
   params.append('fields', 'key,authors,title,cover_id');
-  params.append('limit', String(limit || 10));
-  params.append('page', String(page || 1));
+  params.append('limit', String(limit));
+  params.append('page', String(page));
 
   const data = await fetchJson<TFetchBooksResponse>(
     `/subjects/${category}.json?${params.toString()}`,
@@ -41,15 +30,15 @@ export const fetchBooksByCategory = async (
 /////////// Поиск книг //////////
 export const searchBooks = async (
   searchQuery: string,
-  limit?: number | null,
-  page?: number | null,
+  limit: number = 10,
+  page: number = 1,
 ): Promise<Book[]> => {
   const params = new URLSearchParams();
 
   params.append('q', searchQuery);
   params.append('fields', 'key,title,author_name,cover_i');
-  params.append('limit', String(limit || 10));
-  params.append('page', String(page || 1));
+  params.append('limit', String(limit));
+  params.append('page', String(page));
 
   const data = await fetchJson<TSearchBooksResponse>(`/search.json?${params.toString()}`);
   return data.docs.map(({ key, title, author_name: authors, cover_i: coverId }) => {

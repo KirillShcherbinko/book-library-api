@@ -26,15 +26,17 @@ export const typeDefs = gql`
 
   type Query {
     refresh: AuthResponse!
-    searchBooks(searchQuery: String!, limit: Int, page: Int): [Book!]
-    booksByCategory(category: String!, limit: Int, page: Int): [Book!]
+    searchBooks(searchQuery: String!, limit: Int!, page: Int!): [Book!]
+    booksByCategory(category: String!, limit: Int!, page: Int!): [Book!]
     book(key: String!): Book!
+    userBooks(limit: Int!, page: Int!): [Book!]
   }
 
   type Mutation {
     login(email: String!, password: String!): AuthResponse!
     register(email: String!, password: String!): AuthResponse!
     logout: Boolean!
-    addBookToLibrary(book: BookInput!): Boolean!
+    addBook(book: BookInput!): Boolean!
+    removeBook(bookKey: String!): Boolean!
   }
 `;

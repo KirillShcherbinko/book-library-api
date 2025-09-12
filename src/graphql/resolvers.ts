@@ -4,8 +4,12 @@ import { login, logout, refresh, register } from '@/services/auth-service';
 import { Resolvers } from '@/types/graphql-types';
 import { clearCookies, setCookies } from '@/services/cookie-service';
 import { authUser } from '@/helpers/auth-user';
-import { TGraphQLContext } from '@/types/context-types';
-import { addBookToLibrary } from '@/services/user-books-service';
+import type { TGraphQLContext } from '@/types/context-types';
+import {
+  addBookToLibrary,
+  getUserBooks,
+  removeBookFromLibrary,
+} from '@/services/user-books-service';
 
 export const resolvers: Resolvers = {
   Query: {
@@ -19,6 +23,11 @@ export const resolvers: Resolvers = {
 
     book: async (__dirname, { key }) => {
       return await fetchBook(key);
+    },
+
+    userBooks: async (_, { limit, page }, context: TGraphQLContext) => {
+      const userId = authUser(context);
+      return await getUserBooks(userId, limit, page);
     },
 
     refresh: async (_, __, context) => {
@@ -48,9 +57,14 @@ export const resolvers: Resolvers = {
       return true;
     },
 
-    addBookToLibrary: async (_, { book }, context: TGraphQLContext) => {
+    addBook: async (_, { book }, context: TGraphQLContext) => {
       const userId = authUser(context);
       return await addBookToLibrary(userId, book);
+    },
+
+    removeBook: async (_, { bookKey }, context: TGraphQLContext) => {
+      const userId = authUser(context);
+      return await removeBookFromLibrary(userId, bookKey);
     },
   },
 };

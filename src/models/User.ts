@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose';
 const userSchema = new Schema({
   email: { type: String, unique: true, required: true },
   hashedPassword: { type: String, required: true },
-  takenBooks: { type: [Schema.Types.ObjectId], ref: 'bookModel' },
+  takenBooks: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
 });
 
-export const userModel = model('userModel', userSchema);
+export const userModel = model('User', userSchema);
