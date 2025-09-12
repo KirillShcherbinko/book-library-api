@@ -30,6 +30,8 @@ export const typeDefs = gql`
     booksByCategory(category: String!, limit: Int!, page: Int!): [Book!]
     book(key: String!): Book!
     userBooks(limit: Int!, page: Int!): [Book!]
+    subjects: [String!]
+    subSubjects(subject: String!): [String!]
   }
 
   type Mutation {

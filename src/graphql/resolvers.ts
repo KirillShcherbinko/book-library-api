@@ -1,3 +1,4 @@
+import { fetchSubjects, fetchSubSubjects } from './../services/subjects-service';
 import { searchBooks } from './../services/open-library-service';
 import { fetchBook, fetchBooksByCategory } from '@/services/open-library-service';
 import { login, logout, refresh, register } from '@/services/auth-service';
@@ -36,7 +37,12 @@ export const resolvers: Resolvers = {
       setCookies('refresh-token', newRefreshToken, context);
       return { refreshToken: newRefreshToken };
     },
+
+    subjects: () => fetchSubjects(),
+
+    subSubjects: (_, { subject }) => fetchSubSubjects(subject),
   },
+
   Mutation: {
     login: async (_, { email, password }, context) => {
       const result = await login(email, password);

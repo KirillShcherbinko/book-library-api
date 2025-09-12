@@ -78,6 +78,8 @@ export type Query = {
   booksByCategory?: Maybe<Array<Book>>;
   refresh: AuthResponse;
   searchBooks?: Maybe<Array<Book>>;
+  subSubjects?: Maybe<Array<Scalars['String']['output']>>;
+  subjects?: Maybe<Array<Scalars['String']['output']>>;
   userBooks?: Maybe<Array<Book>>;
 };
 
@@ -98,6 +100,11 @@ export type QuerySearchBooksArgs = {
   limit: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
   searchQuery: Scalars['String']['input'];
+};
+
+
+export type QuerySubSubjectsArgs = {
+  subject: Scalars['String']['input'];
 };
 
 
@@ -233,6 +240,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   booksByCategory?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksByCategoryArgs, 'category' | 'limit' | 'page'>>;
   refresh?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType>;
   searchBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QuerySearchBooksArgs, 'limit' | 'page' | 'searchQuery'>>;
+  subSubjects?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType, RequireFields<QuerySubSubjectsArgs, 'subject'>>;
+  subjects?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   userBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryUserBooksArgs, 'limit' | 'page'>>;
 }>;
 
