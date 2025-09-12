@@ -4,7 +4,7 @@ import { GraphQLError } from 'graphql';
 export const authUser = (context: TGraphQLContext) => {
   const { userId, accessToken } = context;
   if (!userId || !accessToken) {
-    throw new GraphQLError('userModel unautorized', { extensions: { code: 'UNAUTHORIZED' } });
+    throw new GraphQLError('User unautorized', { extensions: { code: 'UNAUTHORIZED' } });
   }
 
   return userId;

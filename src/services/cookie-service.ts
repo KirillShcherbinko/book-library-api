@@ -1,11 +1,15 @@
-import { context } from './../context/index';
 import { TGraphQLContext } from '@/types/context-types';
-import { serialize } from 'cookie';
+import { serialize, SerializeOptions } from 'cookie';
 
 const MAX_AGE = 10 * 60;
 
-const cookieOptions = (age: number) => {
-  return { httpOnly: true, maxAge: age, secure: process.env.NODE_ENV === 'production' };
+const cookieOptions = (age: number): SerializeOptions => {
+  return {
+    httpOnly: true,
+    maxAge: age,
+    secure: true,
+    sameSite: 'none',
+  };
 };
 
 export const setCookies = (key: string, value: string, context: TGraphQLContext) => {

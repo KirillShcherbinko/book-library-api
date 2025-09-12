@@ -21,7 +21,7 @@ export const typeDefs = gql`
     key: ID!
     title: String!
     authors: [String!]!
-    coverId: String
+    coverId: Int
   }
 
   type Query {

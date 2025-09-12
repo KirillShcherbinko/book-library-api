@@ -1,7 +1,6 @@
 import { GraphQLError } from 'graphql';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { IncomingMessage } from 'http';
-import { tokenModel } from '@/models/tokenModel';
+import { tokenModel } from '@/models/Token';
 
 ////////// Генерируем токены //////////
 export const generateTokens = <T extends JwtPayload>(payload: T) => {

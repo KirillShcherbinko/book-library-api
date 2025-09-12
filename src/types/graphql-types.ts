@@ -36,7 +36,7 @@ export type Book = {
 
 export type BookInput = {
   authors: Array<Scalars['String']['input']>;
-  coverId?: InputMaybe<Scalars['String']['input']>;
+  coverId?: InputMaybe<Scalars['Int']['input']>;
   key: Scalars['ID']['input'];
   title: Scalars['String']['input'];
 };
