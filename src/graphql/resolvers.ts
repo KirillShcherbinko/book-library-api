@@ -1,6 +1,9 @@
-import { fetchSubjects, fetchSubSubjects } from './../services/subjects-service';
-import { searchBooks } from './../services/open-library-service';
-import { fetchBook, fetchBooksByCategory } from '@/services/open-library-service';
+import {
+  fetchPopularBooksSubject,
+  fetchSubjects,
+  fetchSubSubjects,
+} from '@/services/subjects-service';
+import { fetchBook, fetchBooksBySubject, searchBooks } from '@/services/open-library-service';
 import { login, logout, refresh, register } from '@/services/auth-service';
 import { Resolvers } from '@/types/graphql-types';
 import { clearCookies, setCookies } from '@/services/cookie-service';
@@ -14,8 +17,8 @@ import {
 
 export const resolvers: Resolvers = {
   Query: {
-    booksByCategory: async (_, { category, limit, page }) => {
-      return await fetchBooksByCategory(category, limit, page);
+    booksBySubject: async (_, { subject, limit, page }) => {
+      return await fetchBooksBySubject(subject, limit, page);
     },
 
     searchBooks: async (_, { searchQuery, limit, page }) => {
@@ -41,6 +44,8 @@ export const resolvers: Resolvers = {
     subjects: () => fetchSubjects(),
 
     subSubjects: (_, { subject }) => fetchSubSubjects(subject),
+
+    popularBooksSubjects: () => fetchPopularBooksSubject(),
   },
 
   Mutation: {

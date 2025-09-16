@@ -3,8 +3,8 @@ import { TFetchBookData, TFetchBooksResponse, TSearchBooksResponse } from '@/typ
 import { Book } from '@/types/graphql-types';
 
 ////////// Получение книг из библиотеки по категориям //////////
-export const fetchBooksByCategory = async (
-  category: string,
+export const fetchBooksBySubject = async (
+  subject: string,
   limit: number = 10,
   page: number = 1,
 ): Promise<Book[]> => {
@@ -15,7 +15,7 @@ export const fetchBooksByCategory = async (
   params.append('page', String(page));
 
   const data = await fetchJson<TFetchBooksResponse>(
-    `/subjects/${category}.json?${params.toString()}`,
+    `/subjects/${subject.toLowerCase().split(' ').join('_')}.json?${params.toString()}`,
   );
   return data.works.map(({ key, title, authors, cover_id: coverId }) => {
     return {

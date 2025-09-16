@@ -75,7 +75,8 @@ export type MutationRemoveBookArgs = {
 export type Query = {
   __typename?: 'Query';
   book: Book;
-  booksByCategory?: Maybe<Array<Book>>;
+  booksBySubject?: Maybe<Array<Book>>;
+  popularBooksSubjects?: Maybe<Array<Scalars['String']['output']>>;
   refresh: AuthResponse;
   searchBooks?: Maybe<Array<Book>>;
   subSubjects?: Maybe<Array<Scalars['String']['output']>>;
@@ -89,10 +90,10 @@ export type QueryBookArgs = {
 };
 
 
-export type QueryBooksByCategoryArgs = {
-  category: Scalars['String']['input'];
+export type QueryBooksBySubjectArgs = {
   limit: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+  subject: Scalars['String']['input'];
 };
 
 
@@ -237,7 +238,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'key'>>;
-  booksByCategory?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksByCategoryArgs, 'category' | 'limit' | 'page'>>;
+  booksBySubject?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksBySubjectArgs, 'limit' | 'page' | 'subject'>>;
+  popularBooksSubjects?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   refresh?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType>;
   searchBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QuerySearchBooksArgs, 'limit' | 'page' | 'searchQuery'>>;
   subSubjects?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType, RequireFields<QuerySubSubjectsArgs, 'subject'>>;

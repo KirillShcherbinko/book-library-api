@@ -27,11 +27,12 @@ export const typeDefs = gql`
   type Query {
     refresh: AuthResponse!
     searchBooks(searchQuery: String!, limit: Int!, page: Int!): [Book!]
-    booksByCategory(category: String!, limit: Int!, page: Int!): [Book!]
+    booksBySubject(subject: String!, limit: Int!, page: Int!): [Book!]
     book(key: String!): Book!
     userBooks(limit: Int!, page: Int!): [Book!]
     subjects: [String!]
     subSubjects(subject: String!): [String!]
+    popularBooksSubjects: [String!]
   }
 
   type Mutation {
