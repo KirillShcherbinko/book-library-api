@@ -4,6 +4,7 @@ const userSchema = new Schema({
   email: { type: String, unique: true, required: true },
   hashedPassword: { type: String, required: true },
   takenBooks: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
+  recentSearch: { type: [String] },
 });
 
 export const userModel = model('User', userSchema);

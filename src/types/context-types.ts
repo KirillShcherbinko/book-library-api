@@ -1,13 +1,13 @@
-import type { IncomingMessage, ServerResponse } from 'http';
+import { Request, Response } from 'express';
 
 export type TGraphQLContextParams = {
-  req: IncomingMessage;
-  res: ServerResponse;
+  req: Request;
+  res: Response;
 };
 
 export type TGraphQLContext = {
   userId?: string;
   accessToken?: string;
   refreshToken?: string;
-  res: ServerResponse;
+  res: Response;
 };

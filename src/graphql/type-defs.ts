@@ -24,15 +24,20 @@ export const typeDefs = gql`
     coverId: Int
   }
 
+  type Subject {
+    title: String!
+    icon: String!
+    subjects: [String!]!
+  }
+
   type Query {
     refresh: AuthResponse!
     searchBooks(searchQuery: String!, limit: Int!, page: Int!): [Book!]
     booksBySubject(subject: String!, limit: Int!, page: Int!): [Book!]
     book(key: String!): Book!
     userBooks(limit: Int!, page: Int!): [Book!]
-    subjects: [String!]
-    subSubjects(subject: String!): [String!]
-    popularBooksSubjects: [String!]
+    subjects: [Subject!]!
+    popularBooksSubjects: [String!]!
   }
 
   type Mutation {

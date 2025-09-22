@@ -30,3 +30,8 @@ export type TSearchBooksResponse = {
   numFound: number;
   docs: TSearchBookData[];
 };
+
+export type TSubjectConfig = {
+  icon: string;
+  subSubjects: string[];
+};

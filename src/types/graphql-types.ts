@@ -76,11 +76,10 @@ export type Query = {
   __typename?: 'Query';
   book: Book;
   booksBySubject?: Maybe<Array<Book>>;
-  popularBooksSubjects?: Maybe<Array<Scalars['String']['output']>>;
+  popularBooksSubjects: Array<Scalars['String']['output']>;
   refresh: AuthResponse;
   searchBooks?: Maybe<Array<Book>>;
-  subSubjects?: Maybe<Array<Scalars['String']['output']>>;
-  subjects?: Maybe<Array<Scalars['String']['output']>>;
+  subjects: Array<Subject>;
   userBooks?: Maybe<Array<Book>>;
 };
 
@@ -104,14 +103,16 @@ export type QuerySearchBooksArgs = {
 };
 
 
-export type QuerySubSubjectsArgs = {
-  subject: Scalars['String']['input'];
-};
-
-
 export type QueryUserBooksArgs = {
   limit: Scalars['Int']['input'];
   page: Scalars['Int']['input'];
+};
+
+export type Subject = {
+  __typename?: 'Subject';
+  icon: Scalars['String']['output'];
+  subjects: Array<Scalars['String']['output']>;
+  title: Scalars['String']['output'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -197,6 +198,7 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Subject: ResolverTypeWrapper<Subject>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -210,6 +212,7 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: Record<PropertyKey, never>;
   Query: Record<PropertyKey, never>;
   String: Scalars['String']['output'];
+  Subject: Subject;
 }>;
 
 export type AuthResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthResponse'] = ResolversParentTypes['AuthResponse']> = ResolversObject<{
@@ -239,12 +242,17 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'key'>>;
   booksBySubject?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksBySubjectArgs, 'limit' | 'page' | 'subject'>>;
-  popularBooksSubjects?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  popularBooksSubjects?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   refresh?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType>;
   searchBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QuerySearchBooksArgs, 'limit' | 'page' | 'searchQuery'>>;
-  subSubjects?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType, RequireFields<QuerySubSubjectsArgs, 'subject'>>;
-  subjects?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  subjects?: Resolver<Array<ResolversTypes['Subject']>, ParentType, ContextType>;
   userBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryUserBooksArgs, 'limit' | 'page'>>;
+}>;
+
+export type SubjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subject'] = ResolversParentTypes['Subject']> = ResolversObject<{
+  icon?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  subjects?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
@@ -252,5 +260,6 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Book?: BookResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Subject?: SubjectResolvers<ContextType>;
 }>;
 

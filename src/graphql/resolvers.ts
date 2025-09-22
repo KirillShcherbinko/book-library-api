@@ -1,8 +1,4 @@
-import {
-  fetchPopularBooksSubject,
-  fetchSubjects,
-  fetchSubSubjects,
-} from '@/services/subjects-service';
+import { fetchPopularBooksSubject, fetchSubjects } from '@/services/subjects-service';
 import { fetchBook, fetchBooksBySubject, searchBooks } from '@/services/open-library-service';
 import { login, logout, refresh, register } from '@/services/auth-service';
 import { Resolvers } from '@/types/graphql-types';
@@ -42,8 +38,6 @@ export const resolvers: Resolvers = {
     },
 
     subjects: () => fetchSubjects(),
-
-    subSubjects: (_, { subject }) => fetchSubSubjects(subject),
 
     popularBooksSubjects: () => fetchPopularBooksSubject(),
   },
