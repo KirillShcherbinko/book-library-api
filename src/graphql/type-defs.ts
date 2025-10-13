@@ -32,10 +32,10 @@ export const typeDefs = gql`
 
   type Query {
     refresh: AuthResponse!
-    searchBooks(searchQuery: String!, limit: Int!, page: Int!): [Book!]
-    booksBySubject(subject: String!, limit: Int!, page: Int!): [Book!]
+    searchBooks(searchQuery: String!, limit: Int!, offset: Int!): [Book!]
+    booksBySubject(subject: String!, limit: Int!, offset: Int!): [Book!]
     book(key: String!): Book!
-    userBooks(limit: Int!, page: Int!): [Book!]
+    userBooks(limit: Int!, offset: Int!): [Book!]
     subjects: [Subject!]!
     popularBooksSubjects: [String!]!
   }

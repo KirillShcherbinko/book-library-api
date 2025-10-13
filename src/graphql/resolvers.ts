@@ -13,21 +13,21 @@ import {
 
 export const resolvers: Resolvers = {
   Query: {
-    booksBySubject: async (_, { subject, limit, page }) => {
-      return await fetchBooksBySubject(subject, limit, page);
+    booksBySubject: async (_, { subject, limit, offset }) => {
+      return await fetchBooksBySubject(subject, limit, offset);
     },
 
-    searchBooks: async (_, { searchQuery, limit, page }) => {
-      return await searchBooks(searchQuery, limit, page);
+    searchBooks: async (_, { searchQuery, limit, offset }) => {
+      return await searchBooks(searchQuery, limit, offset);
     },
 
     book: async (__dirname, { key }) => {
       return await fetchBook(key);
     },
 
-    userBooks: async (_, { limit, page }, context: TGraphQLContext) => {
+    userBooks: async (_, { limit, offset }, context: TGraphQLContext) => {
       const userId = authUser(context);
-      return await getUserBooks(userId, limit, page);
+      return await getUserBooks(userId, limit, offset);
     },
 
     refresh: async (_, __, context) => {

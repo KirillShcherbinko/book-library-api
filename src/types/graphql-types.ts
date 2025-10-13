@@ -91,21 +91,21 @@ export type QueryBookArgs = {
 
 export type QueryBooksBySubjectArgs = {
   limit: Scalars['Int']['input'];
-  page: Scalars['Int']['input'];
+  offset: Scalars['Int']['input'];
   subject: Scalars['String']['input'];
 };
 
 
 export type QuerySearchBooksArgs = {
   limit: Scalars['Int']['input'];
-  page: Scalars['Int']['input'];
+  offset: Scalars['Int']['input'];
   searchQuery: Scalars['String']['input'];
 };
 
 
 export type QueryUserBooksArgs = {
   limit: Scalars['Int']['input'];
-  page: Scalars['Int']['input'];
+  offset: Scalars['Int']['input'];
 };
 
 export type Subject = {
@@ -241,12 +241,12 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'key'>>;
-  booksBySubject?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksBySubjectArgs, 'limit' | 'page' | 'subject'>>;
+  booksBySubject?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksBySubjectArgs, 'limit' | 'offset' | 'subject'>>;
   popularBooksSubjects?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   refresh?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType>;
-  searchBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QuerySearchBooksArgs, 'limit' | 'page' | 'searchQuery'>>;
+  searchBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QuerySearchBooksArgs, 'limit' | 'offset' | 'searchQuery'>>;
   subjects?: Resolver<Array<ResolversTypes['Subject']>, ParentType, ContextType>;
-  userBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryUserBooksArgs, 'limit' | 'page'>>;
+  userBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryUserBooksArgs, 'limit' | 'offset'>>;
 }>;
 
 export type SubjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subject'] = ResolversParentTypes['Subject']> = ResolversObject<{

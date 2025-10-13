@@ -6,13 +6,13 @@ import { Book } from '@/types/graphql-types';
 export const fetchBooksBySubject = async (
   subject: string,
   limit: number = 10,
-  page: number = 1,
+  offset: number = 0,
 ): Promise<Book[]> => {
   const params = new URLSearchParams();
 
   params.append('fields', 'key,authors,title,cover_id');
   params.append('limit', String(limit));
-  params.append('page', String(page));
+  params.append('offset', String(offset));
 
   const data = await fetchJson<TFetchBooksResponse>(
     `/subjects/${subject.toLowerCase().split(' ').join('_')}.json?${params.toString()}`,
@@ -31,14 +31,14 @@ export const fetchBooksBySubject = async (
 export const searchBooks = async (
   searchQuery: string,
   limit: number = 10,
-  page: number = 1,
+  offset: number = 1,
 ): Promise<Book[]> => {
   const params = new URLSearchParams();
 
   params.append('q', searchQuery);
   params.append('fields', 'key,title,author_name,cover_i');
   params.append('limit', String(limit));
-  params.append('page', String(page));
+  params.append('offset', String(offset));
 
   const data = await fetchJson<TSearchBooksResponse>(`/search.json?${params.toString()}`);
   return data.docs.map(({ key, title, author_name: authors, cover_i: coverId }) => {

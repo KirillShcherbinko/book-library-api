@@ -4,7 +4,7 @@ import { Book, BookInput } from '@/types/graphql-types';
 import { GraphQLError } from 'graphql';
 import { Document } from 'mongoose';
 
-export const getUserBooks = async (userId: string, limit: number = 10, page: number = 1) => {
+export const getUserBooks = async (userId: string, limit: number = 10, offset: number = 0) => {
   const userData = await userModel.findById(userId);
 
   if (!userData) {
@@ -14,7 +14,7 @@ export const getUserBooks = async (userId: string, limit: number = 10, page: num
   const userWithBooks = await userData.populate<{ takenBooks: (Book & Document)[] }>({
     path: 'takenBooks',
     options: {
-      skip: (page - 1) * limit,
+      skip: offset * limit,
       limit,
       sort: { key: 1 },
     },
