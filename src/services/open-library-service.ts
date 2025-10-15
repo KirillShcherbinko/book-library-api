@@ -1,4 +1,6 @@
 import { fetchJson } from '@/helpers/fetch-json';
+import { userModel } from '@/models/User';
+import { userSchema } from '@/schema/user-schema';
 import { TFetchBookData, TFetchBooksResponse, TSearchBooksResponse } from '@/types';
 import { Book } from '@/types/graphql-types';
 
@@ -31,7 +33,7 @@ export const fetchBooksBySubject = async (
 export const searchBooks = async (
   searchQuery: string,
   limit: number = 10,
-  offset: number = 1,
+  offset: number = 0,
 ): Promise<Book[]> => {
   const params = new URLSearchParams();
 
@@ -45,14 +47,14 @@ export const searchBooks = async (
     return {
       key,
       title,
-      authors,
+      authors: authors || ['Unknown'],
       coverId,
     };
   });
 };
 
 ////////// Получение данных о книге //////////
-export const fetchBook = async (key: string): Promise<Book> => {
+export const fetchBook = async (key: string, userId?: string): Promise<Book> => {
   const params = new URLSearchParams();
   params.append('fields', 'key,title,authors,covers,description,subjects');
 
@@ -61,12 +63,18 @@ export const fetchBook = async (key: string): Promise<Book> => {
   const books = await searchBooks(key);
   const currentBook = books.find((book) => book.key === key);
 
+  const user = await userModel.findById(userId).populate('takenBooks');
+
+  // Проверяем, есть ли книга с таким ключом в его библиотеке
+  const isInLibrary = user?.takenBooks?.some((book: any) => book.key === key) ?? false;
+
   return {
     key: data.key,
     title: data.title,
     authors: currentBook?.authors || ['Unknown'],
     description: typeof data.description === 'string' ? data.description : data.description?.value,
-    coverIds: data.covers,
-    subjects: data.subjects,
+    coverIds: data.covers?.slice(0, 10) || [],
+    subjects: data.subjects?.slice(0, 10) || [],
+    isInLibrary,
   };
 };

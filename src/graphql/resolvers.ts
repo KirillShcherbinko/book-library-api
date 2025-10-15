@@ -21,8 +21,17 @@ export const resolvers: Resolvers = {
       return await searchBooks(searchQuery, limit, offset);
     },
 
-    book: async (__dirname, { key }) => {
-      return await fetchBook(key);
+    book: async (__dirname, { key }, context: TGraphQLContext) => {
+      let userId: string | undefined = undefined;
+
+      // Проверяем, есть ли вообще авторизация
+      try {
+        userId = authUser(context);
+      } catch {
+        userId = undefined;
+      }
+
+      return await fetchBook(key, userId);
     },
 
     userBooks: async (_, { limit, offset }, context: TGraphQLContext) => {
@@ -32,9 +41,9 @@ export const resolvers: Resolvers = {
 
     refresh: async (_, __, context) => {
       const { refreshToken } = context;
-      const { newRefreshToken } = await refresh(refreshToken);
+      const { accessToken, newRefreshToken } = await refresh(refreshToken);
       setCookies('refresh-token', newRefreshToken, context);
-      return { refreshToken: newRefreshToken };
+      return { accessToken };
     },
 
     subjects: () => fetchSubjects(),

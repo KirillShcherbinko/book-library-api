@@ -29,6 +29,7 @@ export type Book = {
   coverId?: Maybe<Scalars['Int']['output']>;
   coverIds?: Maybe<Array<Scalars['Int']['output']>>;
   description?: Maybe<Scalars['String']['output']>;
+  isInLibrary?: Maybe<Scalars['Boolean']['output']>;
   key: Scalars['ID']['output'];
   subjects?: Maybe<Array<Scalars['String']['output']>>;
   title: Scalars['String']['output'];
@@ -226,6 +227,7 @@ export type BookResolvers<ContextType = any, ParentType extends ResolversParentT
   coverId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   coverIds?: Resolver<Maybe<Array<ResolversTypes['Int']>>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  isInLibrary?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   key?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   subjects?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

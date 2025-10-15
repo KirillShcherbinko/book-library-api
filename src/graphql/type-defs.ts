@@ -15,6 +15,7 @@ export const typeDefs = gql`
     subjects: [String!]
     coverIds: [Int!]
     coverId: Int
+    isInLibrary: Boolean
   }
 
   input BookInput {

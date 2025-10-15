@@ -12,7 +12,7 @@ export const generateTokens = <T extends JwtPayload>(payload: T) => {
   }
 
   const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '3m' });
-  const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, { expiresIn: '10m' });
+  const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, { expiresIn: '10h' });
 
   return { accessToken, refreshToken };
 };

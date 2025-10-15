@@ -27,8 +27,8 @@ const startServer = async (): Promise<void> => {
     app.use(
       '/',
       cors({
-        origin: 'http://localhost:3000', // <- фронтенд
-        credentials: true, // <- куки/авторизация
+        origin: 'http://localhost:3000',
+        credentials: true,
       }),
       bodyParser.json(),
       expressMiddleware(server, {
