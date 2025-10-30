@@ -73,10 +73,17 @@ export type MutationRemoveBookArgs = {
   bookKey: Scalars['String']['input'];
 };
 
+export type PopularBook = {
+  __typename?: 'PopularBook';
+  books?: Maybe<Array<Book>>;
+  subject: Scalars['String']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   book: Book;
   booksBySubject?: Maybe<Array<Book>>;
+  popularBooks: Array<PopularBook>;
   popularBooksSubjects: Array<Scalars['String']['output']>;
   refresh: AuthResponse;
   searchBooks?: Maybe<Array<Book>>;
@@ -197,6 +204,7 @@ export type ResolversTypes = ResolversObject<{
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
+  PopularBook: ResolverTypeWrapper<PopularBook>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subject: ResolverTypeWrapper<Subject>;
@@ -211,6 +219,7 @@ export type ResolversParentTypes = ResolversObject<{
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Mutation: Record<PropertyKey, never>;
+  PopularBook: PopularBook;
   Query: Record<PropertyKey, never>;
   String: Scalars['String']['output'];
   Subject: Subject;
@@ -241,9 +250,15 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   removeBook?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveBookArgs, 'bookKey'>>;
 }>;
 
+export type PopularBookResolvers<ContextType = any, ParentType extends ResolversParentTypes['PopularBook'] = ResolversParentTypes['PopularBook']> = ResolversObject<{
+  books?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType>;
+  subject?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+}>;
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'key'>>;
   booksBySubject?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QueryBooksBySubjectArgs, 'limit' | 'offset' | 'subject'>>;
+  popularBooks?: Resolver<Array<ResolversTypes['PopularBook']>, ParentType, ContextType>;
   popularBooksSubjects?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   refresh?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType>;
   searchBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, RequireFields<QuerySearchBooksArgs, 'limit' | 'offset' | 'searchQuery'>>;
@@ -261,6 +276,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   AuthResponse?: AuthResponseResolvers<ContextType>;
   Book?: BookResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PopularBook?: PopularBookResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subject?: SubjectResolvers<ContextType>;
 }>;

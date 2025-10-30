@@ -31,6 +31,11 @@ export const typeDefs = gql`
     subjects: [String!]!
   }
 
+  type PopularBook {
+    subject: String!
+    books: [Book!]
+  }
+
   type Query {
     refresh: AuthResponse!
     searchBooks(searchQuery: String!, limit: Int!, offset: Int!): [Book!]
@@ -39,6 +44,7 @@ export const typeDefs = gql`
     userBooks(limit: Int!, offset: Int!): [Book!]
     subjects: [Subject!]!
     popularBooksSubjects: [String!]!
+    popularBooks: [PopularBook!]!
   }
 
   type Mutation {

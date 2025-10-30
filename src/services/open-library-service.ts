@@ -2,7 +2,8 @@ import { fetchJson } from '@/helpers/fetch-json';
 import { userModel } from '@/models/User';
 import { userSchema } from '@/schema/user-schema';
 import { TFetchBookData, TFetchBooksResponse, TSearchBooksResponse } from '@/types';
-import { Book } from '@/types/graphql-types';
+import { Book, PopularBook } from '@/types/graphql-types';
+import { fetchPopularBooksSubject } from './subjects-service';
 
 ////////// Получение книг из библиотеки по категориям //////////
 export const fetchBooksBySubject = async (
@@ -77,4 +78,16 @@ export const fetchBook = async (key: string, userId?: string): Promise<Book> => 
     subjects: data.subjects?.slice(0, 10) || [],
     isInLibrary,
   };
+};
+
+////////// Получение популярных книг //////////
+export const fetchPopularBooks = async (): Promise<Promise<PopularBook>[]> => {
+  const popularSubjects = fetchPopularBooksSubject();
+
+  const popularBooks = popularSubjects.map(async (subject) => {
+    const books = await fetchBooksBySubject(subject);
+    return { subject, books };
+  });
+
+  return popularBooks;
 };

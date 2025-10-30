@@ -1,5 +1,10 @@
 import { fetchPopularBooksSubject, fetchSubjects } from '@/services/subjects-service';
-import { fetchBook, fetchBooksBySubject, searchBooks } from '@/services/open-library-service';
+import {
+  fetchBook,
+  fetchBooksBySubject,
+  fetchPopularBooks,
+  searchBooks,
+} from '@/services/open-library-service';
 import { login, logout, refresh, register } from '@/services/auth-service';
 import { Resolvers } from '@/types/graphql-types';
 import { clearCookies, setCookies } from '@/services/cookie-service';
@@ -49,6 +54,8 @@ export const resolvers: Resolvers = {
     subjects: () => fetchSubjects(),
 
     popularBooksSubjects: () => fetchPopularBooksSubject(),
+
+    popularBooks: () => fetchPopularBooks(),
   },
 
   Mutation: {
