@@ -48,6 +48,13 @@ export const addBookToLibrary = async (userId: string, book: BookInput) => {
 };
 
 export const removeBookFromLibrary = async (userId: string, bookKey: string) => {
-  await userModel.findByIdAndUpdate(userId, { $pull: { takenBooks: { key: bookKey } } });
+  const bookData = await bookModel.findOne({ key: bookKey });
+
+  if (!bookData) {
+    throw new GraphQLError('Book not found', { extensions: { code: 'NOT_FOUND' } });
+  }
+
+  await userModel.findByIdAndUpdate(userId, { $pull: { takenBooks: bookData._id } });
+
   return true;
 };

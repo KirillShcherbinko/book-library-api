@@ -1,7 +1,7 @@
 import { TGraphQLContext } from '@/types/context-types';
 import { serialize, SerializeOptions } from 'cookie';
 
-const MAX_AGE = 10 * 60;
+const MAX_AGE = 10 * 60 * 60;
 
 const cookieOptions = (age: number): SerializeOptions => {
   return {
