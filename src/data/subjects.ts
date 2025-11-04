@@ -122,7 +122,7 @@ export const subjects = [
     ],
   },
   {
-    title: 'Books by Language',
+    title: 'Language',
     icon: 'IconLanguage',
     subjects: [
       'English',
